@@ -1,0 +1,26 @@
+This is an implementation of a portion of the Matrix Client-Server protocol, from the client-side only. The specification can be found at https://matrix.org/docs/spec/client_server/r0.6.0
+
+In order to test this client, you will need to set up a Matrix homeserver. You can find one such distribution at https://github.com/matrix-org/synapse
+
+Follow the directions in the Synapse repository to set up a local homeserver. During my testing, I followed the "Synapse Development" section.
+
+To use the client:
+From the top level of the project (where this README is located) execute:
+
+python3 -m src.app.client <homeserver-listener>
+
+where <homeserver-listener> is the endpoint where your homeserver is listening, not the "name" of the homeserver. 
+This is important because when I set up a local homeserver for basic HTTP use, I specified a homeserver "name" of localhost:8080, but the default configuration set up the HTTP listener at port 7680. 
+I'm not sure why it started listening on a port 400 numbers below the port in the name it was given. Suffice it to say, the listening port is not the same as the homeserver "name."
+
+A single client session begins with a login and ends with a logout. You can optionally pass a --register flag to tell the client to register your user with the homeserver first:
+
+python3 -m src.app.client <homeserver-listener> --register
+
+In either case, you will be prompted for a username/password login. If login is successful, you will be able to enter commands through standard input.
+
+Commands:
+logout - Logs out session and ends client process
+createroom <room-name> - Creates a room on the homeserver
+joinroom <room-name> - Join a room on the homeserver
+send <room-name> <message> - Send a message to a room
